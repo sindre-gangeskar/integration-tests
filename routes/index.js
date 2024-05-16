@@ -21,7 +21,7 @@ router.get('/:name', function (req, res, next) {
 router.post('/', async function (req, res, next) {
   countries.push(req.body);
   save(countries);
-  res.json({ status: 'Success', country: req.body });
+  res.json({ status: 'success', country: req.body });
 })
 
 router.put('/:name', async function (req, res, next) {
@@ -37,7 +37,7 @@ router.delete('/:name', async function (req, res, next) {
   countries = countries.filter(x => x.name !== req.params.name)
   save(countries);
   res.json({
-    status: 'Success',
+    status: 'success',
     removed: req.params.name,
     newLength: countries.length
   });
