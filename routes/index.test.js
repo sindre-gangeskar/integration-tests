@@ -147,4 +147,34 @@ describe("testing-server-routes", () => {
             ])
         expect(response.statusCode).toBe(200);
     });
+
+    test("DELETE /Poland - success", async () => {
+        const response = await request(app).delete('/Poland');
+        const { body, statusCode } = response;
+        expect(body).toEqual({
+            status: 'success',
+            removed: 'Poland',
+            newLength: 3
+        })
+
+        expect(save).toHaveBeenCalledWith([
+            {
+                "short": "EN",
+                "name": "England",
+                "capital": "London"
+            },
+            {
+                "short": "DE",
+                "name": "Germany",
+                "capital": "Berlin"
+            },
+            {
+                "short": "IT",
+                "name": "Italy",
+                "capital": "Rome"
+            }
+        ])
+
+        expect(statusCode).toBe(201)
+    })
 });

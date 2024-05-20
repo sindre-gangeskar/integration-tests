@@ -46,11 +46,11 @@ router.put('/:name', async function (req, res, next) {
 router.delete('/:name', async function (req, res, next) {
   countries = countries.filter(x => x.name !== req.params.name)
   await save(countries);
-  res.json({
+  res.status(201).json({
     status: 'success',
     removed: req.params.name,
-    newLength: countries.length
-  });
+    newLength: countries.length,
+  })
 })
 
 
