@@ -20,22 +20,32 @@ router.get('/:name', function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   countries.push(req.body);
-  save(countries);
+  await save(countries);
   res.json({ status: 'success', country: req.body });
 })
 
 router.put('/:name', async function (req, res, next) {
+  let countryUpdated = false;
+
   countries = countries.map(country => {
-    if (country.name === req.params.name)
-      return req.body;
-    else return country;
-  })
-  save(countries);
-})
+    if (country.name === req.params.name) {
+      countryUpdated = true;
+      return req.body;  // Update the country with the new data
+    }
+    return country;  // Return the country unchanged
+  });
+
+  if (!countryUpdated) {
+    return res.status(404).json({ message: 'Could not find country with specified name', statusCode: 404 });
+  }
+
+  await save(countries);
+  res.json({ status: 'success', countryInfo: req.body });
+});
 
 router.delete('/:name', async function (req, res, next) {
   countries = countries.filter(x => x.name !== req.params.name)
-  save(countries);
+  await save(countries);
   res.json({
     status: 'success',
     removed: req.params.name,
